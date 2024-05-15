@@ -20,7 +20,7 @@ Nous pouvons également voir nos images :
 
 
 Mais une fois sur le navigateur, il est impossible d'accéder à l'interface Airflow :
-![airflow_inaccessible](https://github.com/axelToussenel/MLops/assets/91553182/99c215b0-40a3-4582-8c05-97bd9a3beaae | width=500)
+![airflow_inaccessible](https://github.com/axelToussenel/MLops/assets/91553182/99c215b0-40a3-4582-8c05-97bd9a3beaae =500x500)
 
 
 Nous avons essayé une certaine quantité de choses pour résoudre ou contourner se problème, hélas sans résultat. Nous avons tout de même décidé de transmettre nos 3 programmes python qui seraient des DAGs sous Airflow.
