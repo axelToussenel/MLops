@@ -3,6 +3,8 @@ import json
 import time
 import pandas as pd
 import psycopg2
+import os
+import time
 from urllib.parse import urlparse, parse_qs
 
 URL_FILE = "url.json"
@@ -74,8 +76,6 @@ def process_results(data):
 
 
 
-import os
-import time
 
 def save_to_data_directory(json_data):
     """
@@ -89,7 +89,7 @@ def save_to_data_directory(json_data):
     """
     try:
         # Get current date and time
-        today_datetime = time.strftime("%Y-%m-%d_%H-%M-%S")
+        today_datetime = time.strftime("%Y-%m-%d")
 
         # Append current date and time to the filename
         data_filename = os.path.join(DATA_PATH, f"data_{today_datetime}.json")

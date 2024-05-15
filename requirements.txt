@@ -4,3 +4,8 @@ numpy==1.21.2
 os
 sklearn==0.24.2
 mlflow==1.20.2
+os
+json
+time
+psycopg2-binary
+urllib3
