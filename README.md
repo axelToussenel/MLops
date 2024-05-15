@@ -9,6 +9,14 @@ Vous trouverez dans ce Github les 3 programmes pythons correspondants aux DAGs A
 - La transformation des données
 - L'entraînement et le test du modèle
 
+Installez les dépendances avec :
+
+```pip install -r requirements.txt```
+
+et créez les image docker avec :
+
+```make build```
+
 
 Allez sur votre interpréteur bash, saisi la commande suivante :
 
