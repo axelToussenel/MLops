@@ -10,7 +10,7 @@ Vous trouverez dans ce Github les 3 programmes pythons correspondants aux DAGs A
 - L'entraînement et le test du modèle
 
 Nous avons mis en place Airflow et MLflow sur notre VM Azure. Or, lorsque nous lançons la commande docker-compose up, nous voyons nos workers qui tournent :
-![docker_compose](https://github.com/axelToussenel/MLops/assets/91553182/182ff27c-b012-4d7e-9a49-75316ca84918 | width=500)
+![docker_compose](https://github.com/axelToussenel/MLops/assets/91553182/182ff27c-b012-4d7e-9a49-75316ca84918 width="200" height="400" )
 
 
 La preuve avec un docker ps :
