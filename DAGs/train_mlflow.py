@@ -50,7 +50,7 @@ def load_data(n_samples, data_dir):
     file_path = os.path.join(data_dir, 'ges_training.csv')
     df = pd.read_csv(file_path)
 
-    # sélectionner n_samples de manière aléatoire
+    # sélection de n_samples de manière aléatoire
     df = df.sample(n=n_samples)
     df["payload"] = df["payload"].apply(lambda d: json.loads(d))
 
@@ -101,25 +101,24 @@ class TrainGES:
         X = self.data[FeatureSets.train_columns].copy()
         y = self.data[self.target].copy()
 
-        # Split the data into training and testing sets
+        # division en données d'entrainement et de test
         X_train, X_test, y_train, y_test = train_test_split(
             X, y, test_size=TrainGES.test_size, random_state=808
         )
 
-        # Setup GridSearchCV with k-fold cross-validation
+        # mise en place de GridSearchCV avec k-fold cross-validation
         cv = KFold(n_splits=TrainGES.n_splits, random_state=42, shuffle=True)
 
         grid_search = GridSearchCV(
             estimator=self.model, param_grid=TrainGES.param_grid, cv=cv, scoring="accuracy"
         )
 
-        # Fit the model
+        # fit du modèle
         grid_search.fit(X_train, y_train)
 
         self.model = grid_search.best_estimator_
         self.params = grid_search.best_params_
         self.train_score = grid_search.best_score_
-
         yhat = grid_search.predict(X_test)
         self.precision_score = precision_score(y_test, yhat, average="weighted")
         self.recall_score = recall_score(y_test, yhat, average="weighted")
