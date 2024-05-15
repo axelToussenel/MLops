@@ -1,6 +1,4 @@
-"""
-Training the model
-"""
+#Ce programme correspond à l'entraînement du modèle
 import json
 import pandas as pd
 import numpy as np
@@ -22,15 +20,10 @@ import random
 import mlflow
 from mlflow import MlflowClient
 
-# local = True
-# if local:
+
+# Configuration de l'environnement MLflow
 remote_server_uri = "http://localhost:9090"
 experiment_name = "ges_tertiaire"
-
-# else:
-#     # Configure MLflow to communicate with a Databricks-hosted tracking server
-#     experiment_name = "/Users/alexis.perrier@skatai.com/ges_tertiaire"
-#     remote_server_uri = "databricks"
 
 mlflow.set_tracking_uri(remote_server_uri)
 mlflow.set_experiment(experiment_name)
@@ -42,10 +35,8 @@ def load_data_inference(n_samples, data_dir):
     file_path = os.path.join(data_dir, 'ges_training.csv')
     df = pd.read_csv(file_path)
 
-    # trier par 'created_at' en ordre décroissant et sélectionner n_samples
+    # tri sur 'created_at'
     df = df.sort_values(by='created_at', ascending=False).head(n_samples)
-
-    # dump payload into new dataframe
     df["payload"] = df["payload"].apply(lambda d: json.loads(d))
 
     data = pd.DataFrame(list(df["payload"].values))
@@ -61,8 +52,6 @@ def load_data(n_samples, data_dir):
 
     # sélectionner n_samples de manière aléatoire
     df = df.sample(n=n_samples)
-
-    # dump payload into new dataframe
     df["payload"] = df["payload"].apply(lambda d: json.loads(d))
 
     data = pd.DataFrame(list(df["payload"].values))
