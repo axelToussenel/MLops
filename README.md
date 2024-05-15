@@ -13,12 +13,12 @@ Installez les dépendances avec :
 
 ```pip install -r requirements.txt```
 
-et créez les image docker avec :
+Et créez les image docker avec :
 
 ```make build```
 
 
-Allez sur votre interpréteur bash, saisi la commande suivante :
+Allez sur votre interpréteur bash, saisissez la commande suivante :
 
 ```ssh -i .../axel.pem azureuser@40.66.47.201```
 
