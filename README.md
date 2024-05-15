@@ -9,13 +9,19 @@ Vous trouverez dans ce Github les 3 programmes pythons correspondants aux DAGs A
 - La transformation des données
 - L'entraînement et le test du modèle
 
+
 Allez sur votre interpréteur bash, saisi la commande suivante :
+
 ```ssh -i .../axel.pem azureuser@40.66.47.201```
 
+
 A présent tapez :
+
 ```cd airflow```
 
+
 Puis lançons nos worker :
+
 ```docker-compose up```
 
 Nous avons mis en place Airflow et MLflow sur notre VM Azure. Lorsque nous lançons la commande docker-compose up, nous voyons nos workers qui tournent :
