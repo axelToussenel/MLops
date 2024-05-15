@@ -33,4 +33,6 @@ Mais une fois sur le navigateur, il est impossible d'accéder à l'interface Air
 ![airflow_inaccessible](https://github.com/axelToussenel/MLops/assets/91553182/99c215b0-40a3-4582-8c05-97bd9a3beaae)
 
 
-Nous avons essayé une certaine quantité de choses pour résoudre ou contourner ce problème, hélas sans résultat. Nous avons tout de même décidé de transmettre nos 3 programmes python qui seraient des DAGs sous Airflow.
+Nous avons essayé une certaine quantité de choses pour résoudre ou contourner ce problème, hélas sans résultat. Nous avons tout de même décidé de transmettre nos 3 programmes python qui seraient des DAGs sous Airflow. 
+
+De ce fait, nous avons décidé de stocker notre dataset dans un répertoiredu Git.
