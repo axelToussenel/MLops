@@ -48,6 +48,6 @@ Une fois sur le navigateur, voici l'interface d'Airflow :
 ![image](https://github.com/axelToussenel/MLops/assets/91553182/a4df8626-c3f1-4537-8741-f627a04305f9)
 
 
-Nous avons essayé une certaine quantité de choses pour résoudre ou contourner ce problème, hélas sans résultat. Nous avons tout de même décidé de transmettre nos 3 programmes python qui seraient des DAGs sous Airflow. 
+Nous ne sommes malheureusement pas parvenu à aller au bout de ce projet. Vous pouvez trouver tous nos programmes python pour nos DAGs dans ```/DAGs```, nos docker files et docker-compose dans ```/Dockerfiles```.
 
 De ce fait, nous avons décidé de stocker notre dataset dans un répertoiredu Git.
