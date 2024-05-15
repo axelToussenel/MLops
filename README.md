@@ -10,13 +10,13 @@ Vous trouverez dans ce Github les 3 programmes pythons correspondants aux DAGs A
 - L'entraînement et le test du modèle
 
 Nous avons mis en place Airflow et MLflow sur notre VM Azure. Or, lorsque nous lançons la commande docker-compose up, nous voyons nos workers qui tournent :
-![docker_compose](https://github.com/axelToussenel/MLops/assets/91553182/a1569323-e05a-4312-89f5-99e525f4174d =500x)
+![docker_compose](https://github.com/axelToussenel/MLops/assets/91553182/a1569323-e05a-4312-89f5-99e525f4174d =x500)
 
 
 La preuve avec un docker ps :
 ![image](https://github.com/axelToussenel/MLops/assets/91553182/9179ca95-b9e9-4a47-aac3-f48d39771319 =500x)
 Nous pouvons également voir nos images :
-![image](https://github.com/axelToussenel/MLops/assets/91553182/84ee8f31-f4c5-4a8d-be82-b7388582b33c =500x)
+![image](https://github.com/axelToussenel/MLops/assets/91553182/84ee8f31-f4c5-4a8d-be82-b7388582b33c =500x500)
 
 
 Mais une fois sur le navigateur, il est impossible d'accéder à l'interface Airflow :
