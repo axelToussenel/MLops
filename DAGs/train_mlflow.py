@@ -1,8 +1,18 @@
-#Ce programme correspond à l'entraînement du modèle
+import os
 import json
 import pandas as pd
 import numpy as np
-import os
+import random
+import time
+import mlflow
+from mlflow import MlflowClient
+from airflow import DAG
+from airflow.operators.python_operator import PythonOperator
+from datetime import datetime, timedelta
+from sklearn.model_selection import train_test_split, GridSearchCV, KFold
+from sklearn.metrics import precision_score, recall_score
+from sklearn.ensemble import RandomForestClassifier
+from features import FeatureProcessor, FeatureSets
 
 pd.options.display.max_columns = 100
 pd.options.display.max_rows = 60
@@ -10,18 +20,7 @@ pd.options.display.max_colwidth = 100
 pd.options.display.precision = 10
 pd.options.display.width = 160
 
-from sklearn.model_selection import train_test_split, GridSearchCV, KFold
-from sklearn.metrics import precision_score, recall_score
-from sklearn.ensemble import RandomForestClassifier
-from features import FeatureProcessor, FeatureSets
-
-import time
-import random
-import mlflow
-from mlflow import MlflowClient
-
-
-# Configuration de l'environnement MLflow
+DATA_PATH = "../dataset"
 remote_server_uri = "http://localhost:9090"
 experiment_name = "ges_tertiaire"
 
@@ -31,26 +30,10 @@ mlflow.set_experiment(experiment_name)
 mlflow.sklearn.autolog()
 
 
-def load_data_inference(n_samples, data_dir):
-    file_path = os.path.join(data_dir, 'ges_training.csv')
-    df = pd.read_csv(file_path)
-
-    # tri sur 'created_at'
-    df = df.sort_values(by='created_at', ascending=False).head(n_samples)
-    df["payload"] = df["payload"].apply(lambda d: json.loads(d))
-
-    data = pd.DataFrame(list(df["payload"].values))
-    data.drop(columns="n_dpe", inplace=True)
-    data = data.astype(int)
-    data = data[data.etiquette_ges > 0].copy()
-    data.reset_index(inplace=True, drop=True)
-    return data
-
 def load_data(n_samples, data_dir):
-    file_path = os.path.join(data_dir, 'ges_training.csv')
+    file_path = os.path.join(data_dir, 'data_pretraite.csv')
     df = pd.read_csv(file_path)
 
-    # sélection de n_samples de manière aléatoire
     df = df.sample(n=n_samples)
     df["payload"] = df["payload"].apply(lambda d: json.loads(d))
 
@@ -81,7 +64,7 @@ class TrainGES:
         data.reset_index(inplace=True, drop=True)
         if data.shape[0] < TrainGES.minimum_training_samples:
             raise NotEnoughSamples(
-                "data has {data.shape[0]} samples, which is not enough to train a model. min required {TrainGES.minimum_training_samples}"
+                f"data has {data.shape[0]} samples, which is not enough to train a model. min required {TrainGES.minimum_training_samples}"
             )
 
         self.data = data
@@ -91,29 +74,24 @@ class TrainGES:
         self.target = target
         self.params = {}
         self.train_score = 0.0
-
         self.precision_score = 0.0
         self.recall_score =  0.0
         self.probabilities =  [0.0, 0.0]
-
 
     def main(self):
         X = self.data[FeatureSets.train_columns].copy()
         y = self.data[self.target].copy()
 
-        # division en données d'entrainement et de test
         X_train, X_test, y_train, y_test = train_test_split(
             X, y, test_size=TrainGES.test_size, random_state=808
         )
 
-        # mise en place de GridSearchCV avec k-fold cross-validation
         cv = KFold(n_splits=TrainGES.n_splits, random_state=42, shuffle=True)
 
         grid_search = GridSearchCV(
             estimator=self.model, param_grid=TrainGES.param_grid, cv=cv, scoring="accuracy"
         )
 
-        # fit du modèle
         grid_search.fit(X_train, y_train)
 
         self.model = grid_search.best_estimator_
@@ -135,12 +113,27 @@ class TrainGES:
         print(f"\tmedian(probabilities): {np.round(np.median(self.probabilities), 2)}")
         print(f"\tstd(probabilities): {np.round(np.std(self.probabilities), 2)}")
 
-
-
-if __name__ == "__main__":
+def train_model():
     ctime = int(time.time())
-    data = load_data(n_samples = 2000, data_dir = "../dataset")
+    data = load_data(n_samples=2000, data_dir=DATA_PATH)
     with mlflow.start_run() as run:
         train = TrainGES(data)
         train.main()
         train.report()
+
+# DAG Airflow
+default_args = {
+    'owner': 'airflow',
+    'depends_on_past': False,
+    'start_date': datetime(2024, 5, 16),
+    'email_on_failure': False,
+    'email_on_retry': False,
+    'retries': 1,
+    'retry_delay': timedelta(minutes=5),
+}
+
+with DAG('train_model', default_args=default_args, schedule_interval=timedelta(days=1)) as dag:
+    train_model_task = PythonOperator(
+        task_id='train_model',
+        python_callable=train_model
+    )
