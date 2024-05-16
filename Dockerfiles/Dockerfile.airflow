@@ -1,2 +1,12 @@
 FROM apache/airflow:2.8.3
 RUN pip install mlflow scikit-learn
+USER root
+
+# Installer les packages
+RUN pip install mlflow scikit-learn unidecode
+
+USER airflow
+
+# Copier les fichiers nécessaires (exemple)
+COPY ./dags /opt/airflow/dags
+COPY ./plugins /opt/airflow/plugins

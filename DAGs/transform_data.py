@@ -19,6 +19,17 @@ pd.options.display.width = 160
 
 DATA_PATH = "data"
 
+default_args = {
+    'owner': 'airflow',
+    'depends_on_past': False,
+    'start_date': datetime(2024, 5, 16),
+    'email_on_failure': False,
+    'email_on_retry': False,
+    'retries': 1,
+    'retry_delay': timedelta(minutes=5),
+}
+
+
 def rename_columns(columns: t.List[str]) -> t.List[str]:
     """
     Rename columns, convert values to lowercase, and remove accents.
@@ -204,18 +215,10 @@ def preprocess_data():
           print("No JSON data file found in the data directory.")
 
 # DAG Airflow
-default_args = {
-    'owner': 'airflow',
-    'depends_on_past': False,
-    'start_date': datetime(2024, 5, 16),
-    'email_on_failure': False,
-    'email_on_retry': False,
-    'retries': 1,
-    'retry_delay': timedelta(minutes=5),
-}
-
 with DAG('preprocess_data', default_args=default_args, schedule_interval=timedelta(days=1)) as dag:
     preprocess_data_task = PythonOperator(
         task_id='preprocess_data',
         python_callable=preprocess_data
     )
+    
+    preprocess_data_task
