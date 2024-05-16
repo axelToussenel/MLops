@@ -50,10 +50,16 @@ Nous pouvons également voir nos images :
 ![image](https://github.com/axelToussenel/MLops/assets/91553182/84ee8f31-f4c5-4a8d-be82-b7388582b33c)
 
 
-Une fois sur le navigateur, voici l'interface d'Airflow :
+Une fois sur le navigateur, précisez le port ```8080``` après l'adresse de la VM et voici l'interface d'Airflow :
 
 
 ![image](https://github.com/axelToussenel/MLops/assets/91553182/a4df8626-c3f1-4537-8741-f627a04305f9)
+
+
+On peut également accéder à l'interface de MLflow avec le port ```5001``` :
+
+
+![image](https://github.com/axelToussenel/MLops/assets/91553182/e6c25c73-7021-493d-bc85-830fe8fd8c5d)
 
 
 Nous ne sommes malheureusement pas parvenu à aller au bout de ce projet. Vous pouvez trouver tous nos programmes python pour nos DAGs dans ```/DAGs```, nos docker files et docker-compose dans ```/Dockerfiles```.
